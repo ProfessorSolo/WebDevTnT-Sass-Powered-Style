@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>07 · Sass + Tailwind Unite</title>
+
+  <!-- Shared WebDevTnT assets (repo root) -->
+  <link rel="stylesheet" href="../../../styles/reset.css" />
+  <link rel="stylesheet" href="../../../styles/brand.css" />
+  <link rel="stylesheet" href="../../../styles/layout.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="brand-bar">
+      <div class="title">Professor Solo · WebDevTnT</div>
+      <nav data-chapter-nav>
+        <a data-ch="01">Workflow</a>
+        <a data-ch="02">Variables</a>
+        <a data-ch="03">Extend &amp; Mixins</a>
+        <a data-ch="04">Functions</a>
+        <a data-ch="05">Conditionals</a>
+        <a data-ch="06">Loops, Lists, &amp; Maps</a>
+        <a data-ch="07" class="active">Sass + Tailwind</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="site-main">
+    <article class="glass glass--dark demo-card">
+      <header class="demo-header">
+        <p class="demo-kicker">Sass + Tailwind</p>
+        <h1>Sass and Tailwind Unite</h1>
+        <p class="demo-tagline">
+          Use Tailwind for layout/spacing/utility speed, and Sass for authored components, tokens, and “design logic”.
+        </p>
+      </header>
+
+      <nav class="demo-tabs" aria-label="Demo sections">
+        <button class="demo-tab active" type="button" data-panel="panel-why">Why combine them?</button>
+        <button class="demo-tab" type="button" data-panel="panel-pattern">Pattern</button>
+        <button class="demo-tab" type="button" data-panel="panel-demo">Demo</button>
+        <button class="demo-tab" type="button" data-panel="panel-inspect">What to inspect</button>
+      </nav>
+
+      <section class="demo-panels">
+        <section class="demo-panel active" id="panel-why">
+          <h2>Why combine them?</h2>
+          <ul>
+            <li><strong>Tailwind</strong> excels at layout, spacing, and quick composition in HTML.</li>
+            <li><strong>Sass</strong> excels at authored components: tokens, mixins, functions, and reusable patterns.</li>
+            <li>Keep Tailwind usage <em>obvious in markup</em>; keep Sass usage <em>obvious in partials</em>.</li>
+          </ul>
+          <p class="muted">
+            Rule of thumb: if a style is chosen <em>at runtime</em> or is about layout and spacing,
+            use Tailwind. If a style is chosen <em>at compile time</em> or represents a component’s
+            internal logic, use Sass.
+          </p>
+          <p class="muted">
+            This demo uses Tailwind utilities + a small Tailwind component layer, and Sass for a “Neon Panel” component with variants.
+          </p>
+        </section>
+
+        <section class="demo-panel" id="panel-pattern">
+          <h2>Pattern</h2>
+
+          <p>
+            This demo splits responsibility cleanly. Tailwind handles <strong>structure and layout</strong>.
+            Sass handles <strong>components and design logic</strong>. They do not overlap.
+          </p>
+
+          <ul>
+            <li>
+              <strong>Tailwind utilities</strong>:
+              layout grid, spacing, and typography applied directly in HTML.
+            </li>
+            <li>
+              <strong>Tailwind component layer</strong>:
+              a small set of <code>@apply</code>-based helpers (chips and buttons) to reduce repetition.
+            </li>
+            <li>
+              <strong>Sass components</strong>:
+              authored UI (<code>.neon-panel</code>) powered by mixins, functions, and tone variants.
+            </li>
+          </ul>
+
+          <p class="muted">
+            Tailwind answers “how is this laid out?”
+            Sass answers “what is this component?”
+          </p>
+
+          <p class="muted">
+            Files: <code>tailwind.css</code> (Tailwind) and <code>partials/_neon-panel.scss</code> (Sass).
+          </p>
+        </section>
+
+        <section class="demo-panel" id="panel-demo">
+          <h2>Demo</h2>
+
+          <section class="sip-hero">
+            <div class="sip-hero__copy">
+              <h3>One layout, two styling systems</h3>
+              <ul>
+                <li>Layout is Tailwind (grid, gap, responsive columns)</li>
+                <li>Component styling is Sass (<code>.neon-panel</code> + variants)</li>
+              </ul>
+              <p class="muted">
+                Inspect a panel and compare the Tailwind utility rules with the Sass-authored component rules.
+              </p>
+            </div>
+          </section>
+
+          <section class="demo-stage">
+            <div class="tw-wrap">
+              <div class="tw-chip-row">
+                <span class="tw-chip">Tailwind utilities</span>
+                <span class="tw-chip">Tailwind @apply</span>
+                <span class="tw-chip">Sass component</span>
+              </div>
+
+              <div class="tw-grid">
+                <section class="neon-panel neon-panel--cool">
+                  <header class="neon-panel__head">
+                    <h3 class="neon-panel__title">Cool Panel</h3>
+                    <span class="tw-chip tw-chip--cool">tone: cool</span>
+                  </header>
+                  <p class="neon-panel__text">
+                    The glow + border treatment is Sass (mixins + function). The layout is Tailwind.
+                  </p>
+                  <div class="neon-panel__actions">
+                    <button class="tw-btn">Primary</button>
+                    <button class="tw-btn tw-btn--ghost">Ghost</button>
+                  </div>
+                </section>
+
+                <section class="neon-panel neon-panel--hot">
+                  <header class="neon-panel__head">
+                    <h3 class="neon-panel__title">Hot Panel</h3>
+                    <span class="tw-chip tw-chip--hot">tone: hot</span>
+                  </header>
+                  <p class="neon-panel__text">
+                    Same Sass component, different tone variant. No duplicated declarations in HTML.
+                  </p>
+                  <div class="neon-panel__actions">
+                    <button class="tw-btn">Primary</button>
+                    <button class="tw-btn tw-btn--ghost">Ghost</button>
+                  </div>
+                </section>
+
+                <section class="neon-panel neon-panel--ghost">
+                  <header class="neon-panel__head">
+                    <h3 class="neon-panel__title">Ghost Panel</h3>
+                    <span class="tw-chip tw-chip--ghost">tone: ghost</span>
+                  </header>
+                  <p class="neon-panel__text">
+                    “Ghost” removes the fill and relies on stroke + glow. Sass decides the branches at compile time.
+                  </p>
+                  <div class="neon-panel__actions">
+                    <button class="tw-btn">Primary</button>
+                    <button class="tw-btn tw-btn--ghost">Ghost</button>
+                  </div>
+                </section>
+
+                <section class="neon-panel neon-panel--cool neon-panel--dense">
+                  <header class="neon-panel__head">
+                    <h3 class="neon-panel__title">Dense Variant</h3>
+                    <span class="tw-chip tw-chip--cool">padding: dense</span>
+                  </header>
+                  <p class="neon-panel__text">
+                    Variant adds density without adding utility noise to markup.
+                  </p>
+                  <div class="neon-panel__actions">
+                    <button class="tw-btn">Primary</button>
+                    <button class="tw-btn tw-btn--ghost">Ghost</button>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section class="demo-panel" id="panel-inspect">
+          <h2>What to inspect</h2>
+          <ol>
+            <li>Inspect the grid wrapper: it’s Tailwind-driven layout.</li>
+            <li>Inspect <code>.neon-panel</code>: it’s Sass-authored component styling.</li>
+            <li>Open <code>tailwind.css</code> to see <code>@layer components</code> + <code>@apply</code> (chips/buttons).</li>
+            <li>Open <code>partials/_neon-panel.scss</code> to see mixins/functions/conditionals powering variants.</li>
+            <li>In DevTools → Sources, compare tailwind.css output vs main.scss output (two separate inputs, one page).</li>
+          </ol>
+          <p class="muted">
+            Goal: Tailwind for structure, Sass for authored components. Don’t make one pretend to be the other.
+          </p>
+        </section>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <span>Professor Solo · WebDevTnT</span>
+    <span class="muted">© 2026 Josh Solomon</span>
+  </footer>
+
+  <!-- Chapter entry -->
+  <!-- Shared WebDevTnT scripts are imported in main.js for dev/build parity -->
+  <script type="module" src="./scripts/main.js"></script>
+
+</body>
+
+</html>

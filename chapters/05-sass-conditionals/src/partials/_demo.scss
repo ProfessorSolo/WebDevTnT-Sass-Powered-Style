@@ -1,0 +1,34 @@
+@use "./tokens" as *;
+
+.demo-stage { margin-top: $space-6; }
+
+.badge-grid {
+  display: grid;
+  gap: $space-6;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+  .badge-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.badge-zone {
+  padding: $space-6;
+  border-radius: $radius-2;
+  border: 1px solid $stroke;
+  background: $surface;
+
+  &__kicker {
+    margin: 0 0 $space-4 0;
+    color: $muted;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.85em;
+  }
+}
+
+.badge-row {
+  display: flex;
+  gap: $space-2;
+  flex-wrap: wrap;
+}

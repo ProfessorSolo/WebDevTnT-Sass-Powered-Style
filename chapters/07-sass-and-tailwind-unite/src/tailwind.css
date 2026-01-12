@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Keep Tailwind usage obvious: small, intentional component helpers. */
+@layer components {
+  .tw-chip {
+    @apply inline-flex items-center rounded-full border px-3 py-1 text-sm tracking-wide;
+  }
+
+  .tw-chip-row {
+    @apply flex flex-wrap gap-2 mb-6;
+  }
+
+  .tw-chip--cool { @apply border-sky-300/30 text-sky-100/90 bg-sky-500/10; }
+  .tw-chip--hot { @apply border-fuchsia-300/30 text-fuchsia-100/90 bg-fuchsia-500/10; }
+  .tw-chip--ghost { @apply border-white/15 text-white/70 bg-white/5; }
+
+  .tw-btn {
+    @apply inline-flex items-center justify-center rounded-full border px-4 py-2 text-sm font-semibold;
+    @apply border-sky-300/30 bg-sky-500/10 text-sky-100/90;
+  }
+
+  .tw-btn:hover { @apply bg-white/10; }
+
+  .tw-btn--ghost {
+    @apply bg-transparent text-white/80 border-white/20;
+  }
+}

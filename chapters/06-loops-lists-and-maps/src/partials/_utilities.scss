@@ -1,0 +1,23 @@
+@use "./tokens" as *;
+
+// LIST loop: generate spacing utilities
+$gaps: (1, 2, 3, 4, 6);
+
+.u-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+@each $n in $gaps {
+  .u-gap-#{$n} {
+    gap: (0.25rem * $n);
+  }
+}
+
+.u-box {
+  padding: $space-4;
+  border-radius: $radius-2;
+  border: 1px solid $stroke;
+  background: $surface-2;
+  color: $muted;
+}

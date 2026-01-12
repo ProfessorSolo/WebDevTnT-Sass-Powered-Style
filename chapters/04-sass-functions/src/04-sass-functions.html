@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>04 · Sass Functions</title>
+
+  <!-- Shared WebDevTnT assets (repo root) -->
+  <link rel="stylesheet" href="../../../styles/reset.css" />
+  <link rel="stylesheet" href="../../../styles/brand.css" />
+  <link rel="stylesheet" href="../../../styles/layout.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="brand-bar">
+      <div class="title">Professor Solo · WebDevTnT</div>
+      <nav data-chapter-nav>
+        <a data-ch="01">Workflow</a>
+        <a data-ch="02">Variables</a>
+        <a data-ch="03">Extend &amp; Mixins</a>
+        <a data-ch="04" class="active">Functions</a>
+        <a data-ch="05">Conditionals</a>
+        <a data-ch="06">Loops, Lists, &amp; Maps</a>
+        <a data-ch="07">Sass + Tailwind</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <article class="glass glass--dark demo-card">
+      <header class="demo-header">
+        <p class="demo-kicker">Sass · Functions</p>
+        <h1>Sass Functions</h1>
+        <p class="demo-tagline">
+          Functions return values. Think “design math”: consistent spacing, radius, and glow without copy/pasting numbers.
+        </p>
+      </header>
+
+      <nav class="demo-tabs" aria-label="Demo sections">
+        <button class="demo-tab active" type="button" data-panel="panel-why">What Sass functions do</button>
+        <button class="demo-tab" type="button" data-panel="panel-functions">The functions</button>
+        <button class="demo-tab" type="button" data-panel="panel-demo">Demo</button>
+        <button class="demo-tab" type="button" data-panel="panel-inspect">What to inspect</button>
+      </nav>
+
+      <section class="demo-panels">
+        <section class="demo-panel active" id="panel-why">
+          <h2>What Sass functions do</h2>
+
+          <ul>
+            <li>
+              <strong>Functions return values</strong> — lengths, colors, numbers.
+              They never emit selectors or rules.
+            </li>
+
+            <li>
+              <strong>Functions centralize design math</strong>.
+              Spacing, radius, and glow are computed once and reused consistently.
+            </li>
+
+            <li>
+              <strong>Functions can validate inputs</strong>.
+              Invalid arguments fail fast using <code>@error</code>.
+            </li>
+          </ul>
+
+          <p>
+            Think of functions as pure computation.
+            They answer questions like “how big?” or “how intense?” —
+            not “what selector?”
+          </p>
+
+          <div class="demo-code">
+            <h3>A simple Sass function</h3>
+            <pre><code>@function space($n) {
+  @return $n * 0.25rem;
+}</code></pre>
+
+            <h3>Using the function</h3>
+            <pre><code>.card {
+  padding: space(6);
+}</code></pre>
+
+            <h3>Compiled CSS</h3>
+            <pre><code>.card {
+  padding: 1.5rem;
+}</code></pre>
+          </div>
+
+        </section>
+
+
+        <section class="demo-panel" id="panel-functions">
+          <h2>The functions</h2>
+
+          <p>
+            Open <code>partials/_functions.scss</code>. These functions return
+            <em>values</em> — not selectors.
+          </p>
+
+          <ul>
+            <li>
+              <strong><code>space(step)</code></strong> →
+              returns a rem-based spacing value from the spacing scale.
+            </li>
+
+            <li>
+              <strong><code>radius(level)</code></strong> →
+              returns a consistent <code>border-radius</code> value.
+            </li>
+
+            <li>
+              <strong><code>glow(alpha)</code></strong> →
+              returns an RGBA color used for glow effects.
+            </li>
+          </ul>
+          <div class="demo-code">
+            <h3>Function definitions</h3>
+            <pre><code>@function space($step) {
+  @return $step * 0.25rem;
+}
+
+@function radius($level) {
+  @return $level * 0.25rem;
+}
+
+@function glow($alpha) {
+  @return rgba(0, 255, 255, $alpha);
+}</code></pre>
+
+            <h3>Using the functions</h3>
+            <pre><code>.card {
+  padding: space(6);
+  border-radius: radius(3);
+  box-shadow: 0 0 24px glow(0.35);
+}</code></pre>
+          </div>
+
+          <p>
+            Each function answers a single question:
+            <em>“What value should I use here?”</em>
+          </p>
+
+          <p class="muted">
+            The goal isn’t clever math.
+            The goal is one rule, one source of truth, everywhere it’s used.
+          </p>
+        </section>
+
+
+        <section class="demo-panel" id="panel-demo">
+          <h2>Demo</h2>
+
+          <section class="sip-hero">
+            <div class="sip-hero__copy">
+              <h3>Same component, different function inputs</h3>
+
+              <p>
+                All three cards use the <em>same selector</em>.
+                The only difference is the arguments passed to Sass functions.
+              </p>
+
+              <ul>
+                <li>Padding is computed with <code>space()</code></li>
+                <li>Border radius is computed with <code>radius()</code></li>
+                <li>Glow intensity is computed with <code>glow()</code></li>
+              </ul>
+
+              <p class="muted">
+                Inspect a card and jump to the Sass source.
+                You’ll see function calls returning literal values — no mixins, no conditionals.
+              </p>
+            </div>
+          </section>
+
+          <section class="demo-stage">
+            <div class="fn-grid">
+              <article class="fn-card fn-card--tight">
+                <p class="fn-card__kicker">space(4) · radius(2)</p>
+                <h3 class="fn-card__title">Tight</h3>
+                <p class="fn-card__text">
+                  Same component. Smaller spacing and a subtle glow.
+                </p>
+              </article>
+
+              <article class="fn-card fn-card--base">
+                <p class="fn-card__kicker">space(6) · radius(3)</p>
+                <h3 class="fn-card__title">Base</h3>
+                <p class="fn-card__text">
+                  Comfortable defaults. This is the “most pages” version.
+                </p>
+              </article>
+
+              <article class="fn-card fn-card--roomy">
+                <p class="fn-card__kicker">space(8) · radius(4)</p>
+                <h3 class="fn-card__title">Roomy</h3>
+                <p class="fn-card__text">
+                  Larger padding and a stronger glow for hero contexts.
+                </p>
+              </article>
+            </div>
+          </section>
+        </section>
+
+        <section class="demo-panel" id="panel-inspect">
+          <h2>What to inspect</h2>
+
+          <ol>
+            <li>
+              Inspect <code>.fn-card--tight</code>, <code>.fn-card--base</code>, and <code>.fn-card--roomy</code>.
+              Focus on <code>padding</code>, <code>border-radius</code>, and <code>box-shadow</code>.
+            </li>
+
+            <li>
+              In DevTools, click a value (for example <code>padding: 1.5rem</code>)
+              and jump to the Sass source.
+            </li>
+
+            <li>
+              Find the function call that produced it (for example <code>padding: fn.space(6)</code>).
+            </li>
+
+            <li>
+              Confirm the key idea: compiled CSS contains only literal values.
+              The function calls are gone.
+            </li>
+          </ol>
+
+          <p class="muted">
+            Files: <code>partials/_functions.scss</code> (function definitions) and
+            <code>partials/_components.scss</code> (where the functions are used).
+          </p>
+        </section>
+
+
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <span>Professor Solo · WebDevTnT</span>
+    <span class="muted">© 2026 Josh Solomon</span>
+  </footer>
+
+  <!-- Chapter entry -->
+  <!-- Shared WebDevTnT scripts are imported in main.js for dev/build parity -->
+  <script type="module" src="./scripts/main.js"></script>
+
+</body>
+
+</html>

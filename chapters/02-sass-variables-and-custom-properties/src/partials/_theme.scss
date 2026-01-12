@@ -1,0 +1,21 @@
+@use "./tokens" as *;
+
+// CSS custom properties (runtime)
+:root {
+  --surface: rgba(18, 28, 48, 0.55);
+  --surface-2: rgba(0, 0, 0, 0.18);
+  --stroke: rgba(120, 160, 255, 0.28);
+  --ink: #e9eefc;
+  --muted: rgba(233, 238, 252, 0.72);
+  --glow: rgba(120, 160, 255, 0.35);
+}
+
+// Runtime theme swap (no Sass recompilation)
+[data-theme="neon"] {
+  --surface: rgba(24, 10, 40, 0.62);
+  --surface-2: rgba(0, 0, 0, 0.22);
+  --stroke: rgba(255, 80, 210, 0.35);
+  --ink: #fff1fb;
+  --muted: rgba(255, 241, 251, 0.76);
+  --glow: rgba(255, 80, 210, 0.35);
+}

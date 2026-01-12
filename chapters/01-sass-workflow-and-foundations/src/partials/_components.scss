@@ -1,0 +1,17 @@
+@use './tokens' as *;
+
+.wf-card {
+  padding: $space-6;
+  border-radius: $radius-2;
+  border: 1px solid $stroke;
+  background: $surface;
+  color: $ink;
+
+  &__heading {
+    margin-bottom: $space-4;
+  }
+
+  &__text {
+    color: $muted;
+  }
+}

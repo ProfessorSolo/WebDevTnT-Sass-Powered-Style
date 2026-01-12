@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>05 · Sass Conditionals</title>
+
+  <!-- Shared WebDevTnT assets (repo root) -->
+  <link rel="stylesheet" href="../../../styles/reset.css" />
+  <link rel="stylesheet" href="../../../styles/brand.css" />
+  <link rel="stylesheet" href="../../../styles/layout.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="brand-bar">
+      <div class="title">Professor Solo · WebDevTnT</div>
+      <nav data-chapter-nav>
+        <a data-ch="01">Workflow</a>
+        <a data-ch="02">Variables</a>
+        <a data-ch="03">Extend &amp; Mixins</a>
+        <a data-ch="04">Functions</a>
+        <a data-ch="05" class="active">Conditionals</a>
+        <a data-ch="06">Loops, Lists, &amp; Maps</a>
+        <a data-ch="07">Sass + Tailwind</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <article class="glass glass--dark demo-card">
+      <header class="demo-header">
+        <p class="demo-kicker">Sass · Conditionals</p>
+        <h1>Sass Conditionals</h1>
+        <p class="demo-tagline">
+          <code>@if</code> / <code>@else if</code> / <code>@else</code> let you branch at compile time — perfect for variant APIs and guardrails.
+        </p>
+      </header>
+
+      <nav class="demo-tabs" aria-label="Demo sections">
+        <button class="demo-tab active" type="button" data-panel="panel-why">Conditionals</button>
+        <button class="demo-tab" type="button" data-panel="panel-pattern">Component Variations</button>
+        <button class="demo-tab" type="button" data-panel="panel-demo">Demo</button>
+        <button class="demo-tab" type="button" data-panel="panel-inspect">What to inspect</button>
+      </nav>
+
+      <section class="demo-panels">
+        <section class="demo-panel active" id="panel-why">
+          <h2>Compile-time branching</h2>
+
+          <p>
+            Sass conditionals run <strong>at compile time</strong>. They decide which declarations are emitted into the final CSS.
+            The browser never evaluates these branches — it only sees the result.
+          </p>
+
+          <ul>
+            <li>
+              Conditionals are ideal for <strong>variant APIs</strong> (tone, size, intent) built on top of shared base styles.
+            </li>
+            <li>
+              Each variant is just a different set of arguments passed into the same mixin.
+            </li>
+            <li>
+              Invalid inputs can be rejected early using <code>@error</code>, before any CSS is generated.
+            </li>
+          </ul>
+
+          <p class="muted">
+            No JavaScript is involved. Variants are classes, and the branching happens once during compilation.
+          </p>
+
+          <div class="demo-code">
+            <h3>Conditional mixin</h3>
+            <pre><code>@mixin button($intent) {
+  @if $intent == "primary" {
+    background: var(--accent);
+    color: white;
+  } @else if $intent == "danger" {
+    background: var(--danger);
+    color: white;
+  } @else {
+    background: var(--surface);
+    color: var(--ink);
+  }
+}</code></pre>
+
+            <h3>Variants using the same mixin</h3>
+            <pre><code>.btn--primary { @include button("primary"); }
+.btn--danger  { @include button("danger"); }
+.btn--ghost   { @include button("ghost"); }</code></pre>
+          </div>
+
+        </section>
+
+        <section class="demo-panel" id="panel-pattern">
+          <h2>Component Variations</h2>
+
+          <p>
+            This demo uses a single mixin that accepts <strong>tone</strong> and <strong>size</strong>.
+            Inside the mixin, <code>@if</code> branches choose which declarations get emitted.
+          </p>
+
+          <ul>
+            <li><strong>Tone</strong> decides background.</li>
+            <li><strong>Size</strong> decides padding and font-size.</li>
+            <li><strong>Guardrails</strong>: unknown values fail fast with <code>@error</code>.</li>
+          </ul>
+
+          <p class="muted">
+            Open <code>partials/_badge.scss</code> and trace the two branch points: tone first, size second.
+          </p>
+
+          <div class="demo-code">
+            <h3>Mixin Component Variation</h3>
+            <pre><code>@mixin badge($tone: cool, $size: md) {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  border-radius: $radius-pill;
+  border: 1px solid $stroke;
+  letter-spacing: 0.02em;
+  color: $ink;
+
+  // size (compile-time)
+  @if $size == sm {
+    padding: 0.25rem $space-3;
+    font-size: 0.85rem;
+  } @else if $size == lg {
+    padding: $space-2 $space-4;
+    font-size: 1.05rem;
+  } @else if $size == md {
+    padding: 0.35rem $space-4;
+    font-size: 0.95rem;
+  } @else {
+    @error "Unknown badge size: #{$size}. Use sm|md|lg.";
+  }
+
+  // tone (compile-time)
+  @if $tone == hot {
+    background: $hot;
+  } @else if $tone == ghost {
+    background: transparent;
+  } @else if $tone == cool {
+    background: $cool;
+  } @else {
+    @error "Unknown badge tone: #{$tone}. Use cool|hot|ghost.";
+  }
+}</code></pre>
+
+
+          </div>
+
+        </section>
+
+        <section class="demo-panel" id="panel-demo">
+          <h2>Demo</h2>
+
+          <section class="sip-hero">
+            <div class="sip-hero__copy">
+              <h3>Badge variants (compile-time branching)</h3>
+              <ul>
+                <li><code>tone</code>: cool | hot | ghost</li>
+                <li><code>size</code>: sm | md | lg</li>
+              </ul>
+              <p class="muted">
+                Inspect any badge and jump to the mixin. Watch how the branches choose different declarations.
+              </p>
+            </div>
+          </section>
+
+          <section class="demo-stage">
+            <div class="badge-grid">
+              <section class="badge-zone">
+                <p class="badge-zone__kicker">Cool</p>
+                <div class="badge-row">
+                  <span class="badge badge--cool-sm">Cool · sm</span>
+                  <span class="badge badge--cool-md">Cool · md</span>
+                  <span class="badge badge--cool-lg">Cool · lg</span>
+                </div>
+              </section>
+
+              <section class="badge-zone">
+                <p class="badge-zone__kicker">Hot</p>
+                <div class="badge-row">
+                  <span class="badge badge--hot-sm">Hot · sm</span>
+                  <span class="badge badge--hot-md">Hot · md</span>
+                  <span class="badge badge--hot-lg">Hot · lg</span>
+                </div>
+              </section>
+
+              <section class="badge-zone">
+                <p class="badge-zone__kicker">Ghost</p>
+                <div class="badge-row">
+                  <span class="badge badge--ghost-sm">Ghost · sm</span>
+                  <span class="badge badge--ghost-md">Ghost · md</span>
+                  <span class="badge badge--ghost-lg">Ghost · lg</span>
+                </div>
+              </section>
+            </div>
+          </section>
+        </section>
+
+        <section class="demo-panel" id="panel-inspect">
+          <h2>What to inspect</h2>
+          <ol>
+            <li>Inspect <code>.badge--hot-lg</code> (it’s visually distinct).</li>
+            <li>Find the declarations coming from the badge mixin.</li>
+            <li>Jump to <code>partials/_badge.scss</code> and locate the <code>@if</code> branches.</li>
+            <li>Notice: in compiled CSS, you only see the resulting declarations, not the branching logic.<p class="muted">
+                You will <strong>not</strong> see any <code>@if</code>, <code>@else</code>, or unused variant rules in the output.
+                Only the declarations for <code>.badge--hot-lg</code> exist.
+              </p>
+            </li>
+          </ol>
+          <p class="muted">
+            Files: <code>partials/_badge.scss</code>, <code>partials/_demo.scss</code>.
+          </p>
+        </section>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <span>Professor Solo · WebDevTnT</span>
+    <span class="muted">© 2026 Josh Solomon</span>
+  </footer>
+
+  <!-- Chapter entry -->
+  <!-- Shared WebDevTnT scripts are imported in main.js for dev/build parity -->
+  <script type="module" src="./scripts/main.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+@use "./tokens" as *;
+
+// Return rem-based spacing in quarter-rem steps.
+// space(4) -> 1rem, space(6) -> 1.5rem
+@function space($step) {
+  @if type-of($step) != number {
+    @error "space(step) expects a number. Got: #{type-of($step)}";
+  }
+
+  @if $step < 0 {
+    @error "space(step) expects a non-negative number. Got: #{$step}";
+  }
+
+  @return ($step * 0.25rem);
+}
+
+// Return a consistent radius scale.
+// radius(2) -> 0.75rem, radius(3) -> 0.875rem, etc.
+@function radius($level) {
+  @if type-of($level) != number {
+    @error "radius(level) expects a number. Got: #{type-of($level)}";
+  }
+
+  @return (0.5rem + ($level * 0.125rem));
+}
+
+// Reusable glow color based on the brand RGB + an alpha.
+// glow(0.28) -> rgba(120, 160, 255, 0.28)
+@function glow($alpha) {
+  @if type-of($alpha) != number {
+    @error "glow(alpha) expects a number. Got: #{type-of($alpha)}";
+  }
+
+  @if $alpha < 0 or $alpha > 1 {
+    @error "glow(alpha) expects 0..1. Got: #{$alpha}";
+  }
+
+  @return rgba($glow-base, $alpha);
+}

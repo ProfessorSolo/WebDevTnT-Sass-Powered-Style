@@ -1,0 +1,17 @@
+@use "./tokens" as *;
+
+// Placeholder: never outputs by itself.
+%btn-base {
+  padding: $space-3 $space-4;
+  border-radius: $radius-pill;
+  border: 1px solid $stroke;
+  background: $surface-2;
+  color: $ink;
+  letter-spacing: 0.02em;
+
+  &:hover { background: rgba(255, 255, 255, 0.10); }
+  &:active { transform: translateY(1px); }
+}
+
+.extend-zone--alpha { .btn--alpha { @extend %btn-base; } }
+.extend-zone--beta  { .btn--beta  { @extend %btn-base; } }

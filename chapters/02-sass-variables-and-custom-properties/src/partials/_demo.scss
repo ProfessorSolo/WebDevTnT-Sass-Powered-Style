@@ -1,0 +1,85 @@
+@use './tokens' as *;
+
+/* Demo layout spacing */
+.demo-stage {
+  margin-top: $space-6;
+}
+
+.theme-controls {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  flex-wrap: wrap;
+}
+
+/* Demo button (intentionally mixes Sass + CSS vars) */
+.demo-btn {
+  appearance: none;
+  border: 1px solid var(--stroke);
+  background: color-mix(in srgb, var(--surface), transparent 35%);
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+
+  padding: $space-2 $space-4;
+  border-radius: $radius-pill;
+
+  cursor: pointer;
+
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+.demo-btn:hover {
+  transform: translateY(-1px);
+}
+
+.demo-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+.demo-btn:focus-visible {
+  outline: 2px solid rgba(255, 140, 0, 0.9);
+  outline-offset: 3px;
+}
+
+.theme-status {
+  margin: 0;
+  color: rgba(233, 238, 252, 0.8);
+}
+
+/* Runtime comparison layout */
+.demo-compare {
+  display: grid;
+  gap: $space-4;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 820px) {
+  .demo-compare {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.demo-compare__col {
+  border: 1px solid var(--stroke);
+  border-radius: $radius-2;
+
+  padding: $space-4;
+  background: color-mix(in srgb, var(--surface), transparent 35%);
+}
+
+.demo-compare__col h3 {
+  margin: 0 0 $space-3 0;
+}
+
+.demo-compare__col ul {
+  margin: 0;
+  padding-left: $space-4;
+}
+
+.demo-compare__col li + li {
+  margin-top: $space-2;
+}

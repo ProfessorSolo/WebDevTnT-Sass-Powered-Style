@@ -1,0 +1,23 @@
+@use './tokens' as *;
+
+.scale-stack {
+  display: grid;
+  gap: $space-4;
+}
+
+.scale-item {
+  padding: $space-4;
+  border-radius: $radius-2;
+  border: 1px solid var(--stroke);
+  background: color-mix(in srgb, var(--surface), transparent 20%);
+  color: var(--ink);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+/* @for → type scale */
+@for $i from 1 through 6 {
+  .scale-#{$i} {
+    font-size: #{0.75rem + ($i * 0.35rem)};
+  }
+}

@@ -1,0 +1,31 @@
+@use "./tokens" as *;
+
+// MAP loop: generate tone variants
+$tones: (
+  cool: $cool,
+  hot: $hot,
+  ghost: $ghost
+);
+
+.pill-row {
+  display: flex;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-2 $space-4;
+  border-radius: $radius-pill;
+  border: 1px solid $stroke;
+  background: $surface-2;
+  color: $muted;
+}
+
+@each $name, $bg in $tones {
+  .pill--#{$name} {
+    background: $bg;
+    color: $ink;
+  }
+}

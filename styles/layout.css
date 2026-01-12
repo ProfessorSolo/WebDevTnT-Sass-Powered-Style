@@ -1,0 +1,330 @@
+/* ======================================================================  
+   layout.css — shared layout + demo utilities for WebDevTnT
+   Scope: INSIDE <main class="site-main"> only.
+   Page chrome (header/footer, neon grid, glass shell) lives in brand.css
+   ====================================================================== */
+
+/* ======================================================================
+   1. Generic split layout utilities
+   Used by lessons that want a simple "content + sidebar" grid.
+   ====================================================================== */
+
+.layout-split {
+  display: grid;
+  gap: var(--s-3, 1.5rem);
+}
+
+.layout-split--2-1 {
+  grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.2fr);
+}
+
+/* Stack the split layout on narrower viewports */
+@media (max-width: 768px) {
+  .layout-split--stack {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ======================================================================
+   2. Demo card inside the glass main panel
+   <main class="site-main">
+     <article class="glass demo-card">…</article>
+   ====================================================================== */
+
+.demo-card {
+  margin: 0 auto;
+  max-width: 1050px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--s-4, 2.25rem);
+}
+
+/* Neutralize brand.css' white headings inside the glass card */
+/* Higher contrast global defaults for chapter headings */
+.demo-card h1,
+.demo-card h2,
+.demo-card h3 {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+.demo-card hr {
+  border-color: rgba(255, 255, 255, 0.2);
+  margin-bottom: var(--s-2, 2rem);
+}
+
+.demo-card p {
+  color: #111827;
+}
+
+.demo-card.glass--dark p {
+  color: #e2e8f0;
+}
+
+/* ======================================================================
+   3. Demo header block (chapter title + lede)
+   ====================================================================== */
+
+.demo-header {
+  margin-bottom: var(--s-4, 2rem);
+}
+
+.demo-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+}
+
+.demo-tagline {
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+/* ================================================================
+   DEMO TABS — WebDevTnT Neon Glass UI
+   ================================================================= */
+
+/* Tabs container */
+.demo-tabs {
+  display: flex;
+  gap: 0.6rem;
+  margin: 1.5rem 0 2rem;
+  padding: 0.35rem;
+  border-radius: 14px;
+
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+/* Individual tab */
+.demo-tab {
+  position: relative;
+  padding: 0.5rem 1.1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: transparent;
+  color: var(--ink);
+  border: none;
+  cursor: pointer;
+
+  transition: background 0.18s ease, transform 0.15s ease, box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Hover */
+.demo-tab:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16);
+}
+
+/* Active tab */
+.demo-tab.active {
+  background: rgba(255, 255, 255, 0.42);
+  color: #111;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.35);
+}
+
+/* Neon underline indicator */
+.demo-tab.active::after {
+  content: '';
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: -4px;
+  height: 3px;
+  background: var(--brand-primary);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--brand-primary);
+}
+
+/* Keyboard focus */
+.demo-tab:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 3px;
+}
+
+/* ================================================================
+   DEMO PANELS (your <section> elements)
+   ================================================================= */
+
+.demo-panel {
+  display: none;
+  margin-bottom: 2rem;
+}
+
+.demo-panel.active {
+  display: block;
+}
+
+/* ======================================================================
+   5. Demo layout: live preview on top, code below
+   ====================================================================== */
+
+.demo-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4, 2rem);
+  align-items: stretch;
+}
+
+/* Preview + code should both span the card width */
+.demo-preview,
+.demo-code {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Allow wide demos (like justify/align tracks) to scroll horizontally
+   instead of cramming the contents. */
+.demo-preview {
+  overflow-x: auto;
+}
+
+/* Sassy intro paragraph under each subheading */
+.demo-preview .sassy-intro {
+  font-size: 0.9rem;
+  color: #475569;
+  margin-bottom: var(--s-2, 1rem);
+}
+
+/* ======================================================================
+   6. Code panel styling
+   Shared code block look for all demos.
+   ====================================================================== */
+
+.demo-code {
+  background: rgba(15, 23, 42, 0.96);
+  color: #e5e7eb;
+  border-radius: var(--radius, 16px);
+  padding: var(--s-3, 1.5rem);
+  font-family: var(--font-mono, ui-monospace);
+  font-size: 0.78rem;
+  overflow-x: auto;
+  box-shadow: var(--shadow-soft, 0 10px 30px rgba(0, 0, 0, 0.25));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.demo-code h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  color: var(--brand-accent, #ffd166);
+}
+
+.demo-code pre {
+  margin: 0;
+  white-space: pre;
+}
+
+/* ======================================================================
+   7. Generic demo visual building blocks
+   Used by many chapters (Transforms, Transitions, etc.)
+   ====================================================================== */
+
+/* Square “card” component for visual examples */
+.box {
+  width: 140px;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #020617;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.45);
+}
+
+.box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Reference frame for translate demos */
+.translate-frame {
+  width: 180px;
+  height: 180px;
+  border-radius: 16px;
+  border: 1px dashed rgba(148, 163, 184, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    circle at 20% 0%,
+    rgba(148, 163, 253, 0.3),
+    transparent 55%
+  );
+}
+
+/* ============================================================
+   KEEP LEARNING PANEL
+   ============================================================ */
+
+.demo-layout--stacked {
+  display: block;
+}
+
+.keep-list {
+  margin: 1rem 0 1.25rem;
+  padding-left: 1.1rem;
+  font-size: 0.95rem;
+  color: #dbeafe;
+}
+
+.keep-list li + li {
+  margin-top: 0.4rem;
+}
+
+.keep-prompt-label {
+  margin-bottom: 0.35rem;
+  font-size: 0.9rem;
+  color: #e5e7eb;
+}
+
+.keep-prompt {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.9);
+  box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.7);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* ======================================================================
+   End of layout.css — add new shared patterns here as they stabilize.
+   ====================================================================== */
+
+/* High-contrast helpers for dark glass cards */
+.glass--dark .demo-tagline,
+.glass--dark .demo-preview .sassy-intro {
+  color: #e2e8f0;
+}
+
+/* Vertical rhythm for prose inside demo panels */
+.demo-panel > * + * {
+  margin-top: 1.25rem;
+}
+
+/* Tighter rhythm inside code blocks */
+.demo-code > * + * {
+  margin-top: 0.75rem;
+}
+
+/* Lists need explicit breathing room */
+.demo-panel ul,
+.demo-panel ol {
+  padding-left: 1.25rem;
+}
+
+.demo-panel li + li {
+  margin-top: 0.5rem;
+}

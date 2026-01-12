@@ -1,0 +1,97 @@
+@use "./tokens" as *;
+
+// Breakpoint mixin (no media-query copy/paste)
+@mixin mq($min) {
+  @media (min-width: $min) { @content; }
+}
+
+// Button “API” mixin: parameters + defaults
+// tone: cool | hot | ghost
+// size: sm | md | lg
+@mixin button($tone: cool, $size: md, $glow: false) {
+  border-radius: $radius-pill;
+  border: 1px solid $stroke;
+  background: $surface-2;
+  color: $ink;
+  letter-spacing: 0.02em;
+
+  // size
+  @if $size == sm {
+    padding: $space-2 $space-3;
+    font-size: 0.9rem;
+  } @else if $size == lg {
+    padding: $space-4 $space-6;
+    font-size: 1.05rem;
+  } @else {
+    padding: $space-3 $space-4;
+    font-size: 1rem;
+  }
+
+  // tone
+  @if $tone == hot {
+    background: $hot;
+  } @else if $tone == ghost {
+    background: transparent;
+  } @else {
+    background: $cool;
+  }
+
+  &:hover { background: rgba(255, 255, 255, 0.12); }
+  &:active { transform: translateY(1px); }
+
+  // optional feature
+  @if $glow == true {
+    box-shadow: 0 0 22px rgba(255, 255, 255, 0.08);
+  }
+}
+
+// Variant wrappers (tiny, readable)
+.m-btn { @include button(); }
+
+.m-btn--sm   { @include button(cool, sm); }
+.m-btn--md   { @include button(cool, md); }
+.m-btn--lg   { @include button(cool, lg); }
+
+.m-btn--cool { @include button(cool, md); }
+.m-btn--hot  { @include button(hot, md); }
+.m-btn--ghost{ @include button(ghost, md); }
+
+.m-btn--glow { @include button(cool, md, true); }
+
+.m-btn--icon {
+  @include button(ghost, md);
+  position: relative;
+  padding-left: 2.25rem;
+
+  &::before {
+    content: "⚡";
+    position: absolute;
+    left: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.9;
+  }
+}
+
+// Responsive demo using breakpoint mixin
+.pill-row {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+
+  @include mq(720px) {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-2 $space-4;
+  border-radius: $radius-pill;
+  border: 1px solid $stroke;
+  background: $surface-2;
+  color: $muted;
+}

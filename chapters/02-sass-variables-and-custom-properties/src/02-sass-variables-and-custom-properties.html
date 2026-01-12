@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>02 · Sass Variables vs CSS Custom Properties</title>
+
+  <!-- Shared WebDevTnT assets (repo root) -->
+  <link rel="stylesheet" href="../../../styles/reset.css" />
+  <link rel="stylesheet" href="../../../styles/brand.css" />
+  <link rel="stylesheet" href="../../../styles/layout.css" />
+</head>
+
+<body data-theme="prime">
+  <header class="site-header">
+    <div class="brand-bar">
+      <div class="title">Professor Solo · WebDevTnT</div>
+      <nav data-chapter-nav>
+        <a data-ch="01">Workflow</a>
+        <a data-ch="02" class="active">Variables</a>
+        <a data-ch="03">Extend &amp; Mixins</a>
+        <a data-ch="04">Functions</a>
+        <a data-ch="05">Conditionals</a>
+        <a data-ch="06">Loops, Lists, &amp; Maps</a>
+        <a data-ch="07">Sass + Tailwind</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <article class="glass glass--dark demo-card">
+      <header class="demo-header">
+        <p class="demo-kicker">Sass · Variables</p>
+        <h1>Sass Variables vs CSS Custom Properties</h1>
+        <p class="demo-tagline">
+          Sass variables compile away. CSS custom properties stick around and can change at runtime.
+        </p>
+      </header>
+
+      <nav class="demo-tabs" aria-label="Demo sections">
+        <button class="demo-tab active" type="button" data-panel="panel-overview">
+          Build-time vs runtime
+        </button>
+        <button class="demo-tab" type="button" data-panel="panel-model">Mental model</button>
+        <button class="demo-tab" type="button" data-panel="panel-demo">Demo</button>
+        <button class="demo-tab" type="button" data-panel="panel-inspect">What to inspect</button>
+
+      </nav>
+
+      <section class="demo-panels">
+        <section class="demo-panel active" id="panel-overview">
+          <h2>Sass variables compile away. CSS variables persist.</h2>
+
+          <p>
+            Sass variables and CSS custom properties solve different problems.
+            This demo shows where each one lives in the lifecycle of your styles.
+          </p>
+
+          <ul>
+            <li>
+              <strong>Sass variables</strong> are resolved at build time and do not
+              exist in the browser.
+            </li>
+            <li>
+              <strong>CSS custom properties</strong> exist at runtime and can be
+              changed without recompiling.
+            </li>
+            <li>
+              The right choice depends on <em>when</em> a value needs to change.
+            </li>
+          </ul>
+
+          <div class="demo-code">
+            <h3>Sass variables (build time)</h3>
+            <pre><code>// tokens.scss
+$space-6: 1.5rem;
+$radius-2: 0.75rem;
+
+.card {
+  padding: $space-6;
+  border-radius: $radius-2;
+}
+
+</code></pre>
+
+            <h3>Compiled CSS output</h3>
+            <pre><code>.card {
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+}
+
+</code></pre>
+
+
+            <h3>CSS custom properties (runtime)</h3>
+            <pre><code>:root {
+  --surface: rgba(20, 30, 50, 0.6);
+  --stroke: rgba(255, 255, 255, 0.2);
+}
+
+.card {
+  background: var(--surface);
+  border-color: var(--stroke);
+}</code></pre>
+          </div>
+
+          <p class="muted">
+            Sass variables shape the CSS you generate.
+            CSS custom properties remain live and can respond to user interaction.
+          </p>
+        </section>
+
+
+        <section class="demo-panel" id="panel-model">
+          <h2>Mental model</h2>
+
+          <p>
+            Sass variables and CSS custom properties exist at different points in time.
+            Understanding <em>when</em> they exist determines <em>which</em> one you should use.
+          </p>
+
+          <p>
+            <strong>Sass variables are compile-time only.</strong>
+            They help you author CSS, but they do not exist in the browser.
+            In the compiled output, only the final literal values remain.
+          </p>
+
+          <p>
+            <strong>CSS custom properties are runtime values.</strong>
+            They live in the DOM, participate in the cascade and inheritance,
+            and can be changed after the page loads.
+          </p>
+
+          <div class="demo-code">
+            <h3>Decision rule</h3>
+            <pre><code>Use Sass variables when the value is fixed at build time.
+Use CSS custom properties when the value must change at runtime.</code></pre>
+          </div>
+
+          <p class="muted">
+            Most real projects use both: Sass for structure and math,
+            CSS custom properties for themes and user-driven changes.
+          </p>
+        </section>
+
+
+        <section class="demo-panel" id="panel-inspect">
+          <h2>What to inspect</h2>
+
+          <p>
+            This step highlights the practical difference between Sass variables and
+            CSS custom properties in the browser.
+          </p>
+
+          <ol>
+            <li>
+              Inspect the <code>.token-card</code> in the <strong>Demo</strong> tab.
+            </li>
+            <li>
+              In the <strong>Styles</strong> pane, find the background and border rules.
+              Notice they use <code>var(--surface)</code> and <code>var(--stroke)</code>.
+            </li>
+            <li>
+              Click the rule source to jump to <code>main.scss</code> or a partial.
+            </li>
+            <li>
+              Toggle the theme and watch the computed values change without any Sass
+              recompilation.
+            </li>
+          </ol>
+
+          <div class="demo-code">
+            <h3>Search for these in DevTools</h3>
+            <pre><code>--surface      ✔ present (runtime)
+--stroke       ✔ present (runtime)
+$space-6       ✖ not present (compiled away)</code></pre>
+          </div>
+
+          <p class="muted">
+            In the <strong>Computed</strong> panel, search for <code>--surface</code>.
+            You should see it resolved from <code>:root</code> or
+            <code>[data-theme="neon"]</code>, depending on the active theme.
+          </p>
+        </section>
+
+
+        <section class="demo-panel" id="panel-demo">
+          <h2>Demo</h2>
+
+          <p class="demo-kicker">Runtime behavior</p>
+          <h3>Theme toggle (CSS variables in motion)</h3>
+
+          <p>
+            This button toggles a <code>data-theme</code> attribute on the page.
+            No Sass recompiles. The only values that change live in the browser.
+          </p>
+
+          <p class="muted">
+            Click the button, then open DevTools → <strong>Computed</strong>.
+            Watch <code>--surface</code> update. Notice that Sass variables never appear.
+          </p>
+
+          <div class="demo-compare">
+            <div class="demo-compare__col">
+              <h3>Changes at runtime</h3>
+              <ul>
+                <li><code>--surface</code> (background)</li>
+                <li><code>--stroke</code> (border)</li>
+              </ul>
+            </div>
+
+            <div class="demo-compare__col">
+              <h3>Baked in at build time</h3>
+              <ul>
+                <li><code>$space-6</code> (compiled away)</li>
+                <li><code>$radius-2</code> (compiled away)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="theme-controls">
+            <button class="demo-btn" type="button" id="themeBtn">
+              Toggle theme
+            </button>
+
+            <p class="theme-status" aria-live="polite">
+              Theme set to: <strong id="themeValue">prime</strong>
+            </p>
+          </div>
+
+          <section class="token-card" aria-label="Token Card">
+            <header class="token-card__head">
+              <h3 class="token-card__title">Token Card</h3>
+              <p class="token-card__subtitle">
+                Background and border are CSS custom properties (runtime).
+                Spacing and radius are Sass variables (compile-time).
+              </p>
+            </header>
+
+            <div class="token-grid">
+              <div class="token-pill">
+                <span class="token-pill__label">Sass var</span>
+                <code class="token-pill__value">$space-6</code>
+              </div>
+
+              <div class="token-pill">
+                <span class="token-pill__label">CSS var</span>
+                <code class="token-pill__value">--surface</code>
+              </div>
+
+              <div class="token-pill">
+                <span class="token-pill__label">Sass var</span>
+                <code class="token-pill__value">$radius-2</code>
+              </div>
+
+              <div class="token-pill">
+                <span class="token-pill__label">CSS var</span>
+                <code class="token-pill__value">--stroke</code>
+              </div>
+            </div>
+          </section>
+        </section>
+
+
+
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <span>Professor Solo · WebDevTnT</span>
+    <span class="muted">© 2026 Josh Solomon</span>
+  </footer>
+
+  <!-- Chapter entry -->
+  <!-- Shared WebDevTnT scripts are imported in main.js for dev/build parity -->
+  <script type="module" src="./scripts/main.js"></script>
+
+</body>
+
+</html>

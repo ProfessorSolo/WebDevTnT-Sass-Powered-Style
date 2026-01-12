@@ -1,0 +1,34 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# Build output
+dist/
+.out/
+.build/
+
+# Astro / Vite
+.astro/
+vite.config.timestamp-*
+*.tsbuildinfo
+
+# Env & local
+.env
+.env.*
+!.env.example
+
+# Editors / OS
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Tests / coverage
+coverage/
+.junit/
+
+# Instructor files
+README-INSTRUCTOR.md
+README-INSTRUCTOR-*.md

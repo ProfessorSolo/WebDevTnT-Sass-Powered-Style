@@ -1,0 +1,62 @@
+@use './tokens' as *;
+@use './functions' as fn;
+
+.fn-card {
+  border: 1px solid $stroke;
+  background: $surface;
+  color: $ink;
+
+  // Base depth (no glow here; variants add it)
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 14px 44px rgba(0, 0, 0, 0.35);
+
+  &__kicker {
+    margin: 0 0 fn.space(2) 0;
+    color: $muted;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.85em;
+  }
+
+  &__title {
+    margin: 0 0 fn.space(2) 0;
+    letter-spacing: 0.02em;
+  }
+
+  &__text {
+    margin: 0;
+    color: $muted;
+    max-width: 55ch;
+  }
+}
+
+/* Variants: same component, different function inputs
+   Glow is intentionally a two-layer effect so it reads on a neon/glass background:
+   - first glow = tighter, brighter core
+   - second glow = wider, softer haze
+*/
+
+.fn-card--tight {
+  padding: fn.space(4);
+  border-radius: fn.radius(2);
+
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04) inset, 0 0 16px fn.glow(0.3),
+    0 0 40px fn.glow(0.14), 0 14px 44px rgba(0, 0, 0, 0.35);
+}
+
+.fn-card--base {
+  padding: fn.space(6);
+  border-radius: fn.radius(3);
+
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04) inset, 0 0 22px fn.glow(0.38),
+    0 0 56px fn.glow(0.18), 0 14px 44px rgba(0, 0, 0, 0.35);
+}
+
+.fn-card--roomy {
+  padding: fn.space(8);
+  border-radius: fn.radius(4);
+
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 8px 32px fn.glow(0.55), 0 20px 96px fn.glow(0.28),
+    0 14px 44px rgba(0, 0, 0, 0.35);
+}

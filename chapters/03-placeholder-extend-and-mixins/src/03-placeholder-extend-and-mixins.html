@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>03 · Placeholders, @extend, and Mixins</title>
+
+  <!-- Shared WebDevTnT assets (repo root) -->
+  <link rel="stylesheet" href="../../../styles/reset.css" />
+  <link rel="stylesheet" href="../../../styles/brand.css" />
+  <link rel="stylesheet" href="../../../styles/layout.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="brand-bar">
+      <div class="title">Professor Solo · WebDevTnT</div>
+      <nav data-chapter-nav>
+        <a data-ch="01">Workflow</a>
+        <a data-ch="02">Variables</a>
+        <a data-ch="03" class="active">Extend &amp; Mixins</a>
+        <a data-ch="04">Functions</a>
+        <a data-ch="05">Conditionals</a>
+        <a data-ch="06">Loops, Lists, &amp; Maps</a>
+        <a data-ch="07">Sass + Tailwind</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <article class="glass glass--dark demo-card">
+      <header class="demo-header">
+        <p class="demo-kicker">Sass · Reuse</p>
+        <h1>Placeholders, @extend, and Mixins</h1>
+        <p class="demo-tagline">
+          <code>@extend</code> merges selectors. Mixins let you design a tiny styling API: parameters, defaults, and safe reuse.
+        </p>
+      </header>
+
+      <nav class="demo-tabs" aria-label="Demo sections">
+        <button class="demo-tab active" type="button" data-panel="panel-why">What this demo is proving</button>
+        <button class="demo-tab" type="button" data-panel="panel-extend">@extend (selector merge)</button>
+        <button class="demo-tab" type="button" data-panel="panel-mixins">Mixins (power)</button>
+        <button class="demo-tab" type="button" data-panel="panel-inspect">What to inspect</button>
+      </nav>
+
+      <section class="demo-panels">
+
+        <section class="demo-panel active" id="panel-why">
+          <h2>Two ways to reuse styles</h2>
+
+          <ul>
+            <li>
+              <strong>Placeholders (<code>%thing</code>)</strong> are reusable rule sets.
+              They never generate CSS on their own and only exist to be reused.
+            </li>
+
+            <li>
+              <strong><code>@extend</code></strong> reuses a placeholder by merging selectors.
+              Multiple selectors end up sharing the same CSS rule.
+            </li>
+
+            <li>
+              <strong>Mixins</strong> reuse styles by generating new declarations
+              for each selector that includes them.
+            </li>
+          </ul>
+
+          <div class="demo-code">
+            <h3>Placeholder + @extend</h3>
+            <pre><code>%card-shell {
+  border: 1px solid var(--stroke);
+  background: var(--surface);
+  border-radius: $radius-2;
+}
+
+.panel--extend {
+  @extend %card-shell;
+}
+
+</code></pre>
+
+            <h3>Mixin (parameterized)</h3>
+            <pre><code>@mixin card-shell($radius: $radius-2) {
+  border: 1px solid var(--stroke);
+  background: var(--surface);
+  border-radius: $radius;
+}
+
+.panel--mixin {
+  @include card-shell($radius: $radius-pill);
+}</code></pre>
+          </div>
+
+          <p class="muted">
+            Placeholders are the raw material. <code>@extend</code> merges selectors.
+            Mixins generate declarations. Same intent, very different output.
+          </p>
+        </section>
+
+
+
+
+
+        <section class="demo-panel" id="panel-extend">
+          <h2>@extend (selector merge)</h2>
+          <p>
+            Two different contexts extend the same placeholder. In compiled CSS you’ll see a <strong>merged selector list</strong>.
+            That list is the coupling.
+          </p>
+
+          <section class="demo-stage">
+            <div class="extend-grid">
+              <div class="extend-zone extend-zone--alpha">
+                <p class="extend-zone__kicker">Zone Alpha</p>
+                <button class="btn btn--alpha">Alpha Button</button>
+              </div>
+
+              <div class="extend-zone extend-zone--beta">
+                <p class="extend-zone__kicker">Zone Beta</p>
+                <button class="btn btn--beta">Beta Button</button>
+              </div>
+            </div>
+
+          </section>
+
+          <div class="demo-code">
+            <h3>Sass source</h3>
+            <pre><code>%btn-base {
+  padding: $space-2 $space-4;
+  border-radius: $radius-pill;
+}
+
+.zone-alpha .btn {
+  @extend %btn-base;
+}
+
+.zone-beta .btn {
+  @extend %btn-base;
+}</code></pre>
+
+            <h3>Compiled CSS</h3>
+            <pre><code>.zone-alpha .btn,
+.zone-beta .btn {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+}</code></pre>
+          </div>
+
+
+          <p class="muted">
+            In Sass: both buttons <code>@extend %btn-base</code> from different parent selectors.
+            In CSS: those selectors get merged into one rule.
+          </p>
+          <p> Any future change to %btn-base now affects both contexts at once,
+            even if they were never meant to be related.</p>
+        </section>
+
+        <section class="demo-panel" id="panel-mixins">
+          <h2>Mixins (power)</h2>
+          <p>
+            Here the mixin is a mini-API: <strong>size</strong>, <strong>tone</strong>, and an optional <strong>glow</strong>.
+            Same mixin, many variants — with clear, local output.
+          </p>
+
+          <section class="demo-stage">
+            <div class="mixin-grid">
+              <div class="mixin-zone">
+                <p class="extend-zone__kicker">Size variants</p>
+                <div class="btn-row">
+                  <button class="m-btn m-btn--sm m-btn--cool">Small</button>
+                  <button class="m-btn m-btn--md m-btn--cool">Medium</button>
+                  <button class="m-btn m-btn--lg m-btn--cool">Large</button>
+                </div>
+              </div>
+
+              <div class="mixin-zone">
+                <p class="extend-zone__kicker">Tone variants</p>
+                <div class="btn-row">
+                  <button class="m-btn m-btn--md m-btn--cool">Cool</button>
+                  <button class="m-btn m-btn--md m-btn--hot">Hot</button>
+                  <button class="m-btn m-btn--md m-btn--ghost">Ghost</button>
+                </div>
+              </div>
+
+
+
+              <div class="mixin-zone">
+                <p class="extend-zone__kicker">Optional features</p>
+                <div class="btn-row">
+                  <button class="m-btn m-btn--md m-btn--cool m-btn--glow">Glow</button>
+                  <button class="m-btn m-btn--md m-btn--hot m-btn--glow">Glow Hot</button>
+                  <button class="m-btn m-btn--md m-btn--ghost m-btn--icon">Icon</button>
+                </div>
+              </div>
+
+              <div class="mixin-zone">
+                <p class="extend-zone__kicker">Responsive via mixin</p>
+                <p class="muted">
+                  Resize the viewport: this layout shifts using a breakpoint mixin (no media-query copy/paste).
+                </p>
+                <div class="pill-row">
+                  <span class="pill">One mixin</span>
+                  <span class="pill">Many selectors</span>
+                  <span class="pill">Predictable output</span>
+                </div>
+              </div>
+
+
+            </div>
+          </section>
+          <div class="demo-code">
+            <h3>The mixin</h3>
+            <pre><code>@mixin badge(
+  $size: md,
+  $tone: cool,
+  $glow: false
+) {
+  padding: map-get($sizes, $size);
+  background: map-get($tones, $tone);
+
+  @if $glow {
+    box-shadow: 0 0 24px map-get($glows, $tone);
+  }
+}</code></pre>
+
+            <h3>Variant wrappers</h3>
+            <pre><code>.badge--sm   { @include badge(sm); }
+.badge--md   { @include badge(md); }
+.badge--lg   { @include badge(lg); }
+
+.badge--hot  { @include badge(md, hot); }
+.badge--glow { @include badge(md, cool, true); }</code></pre>
+          </div>
+
+          <p class="muted">
+            Each class includes the same mixin with different arguments.
+            The output CSS is duplicated by design — but it stays local, explicit, and easy to reason about.
+          </p>
+        </section>
+
+        <section class="demo-panel" id="panel-inspect">
+          <h2>What to inspect</h2>
+
+          <ol>
+            <li>
+              In the <strong>@extend</strong> tab, inspect
+              <code>.btn--alpha</code> and <code>.btn--beta</code>.
+              In the compiled CSS, find the merged selector list.
+            </li>
+
+            <li>
+              Notice that both selectors now point to the same rule,
+              even though they live in different parts of the UI.
+            </li>
+
+            <li>
+              Switch to the <strong>Mixins</strong> tab and inspect
+              <code>.m-btn--cool</code>, <code>.m-btn--hot</code>, and
+              <code>.m-btn--ghost</code>.
+            </li>
+
+            <li>
+              Notice that each variant produces its own rule.
+              No cross-context coupling. No unexpected selector merges.
+            </li>
+
+            <li>
+              Find the breakpoint mixin and observe how it replaces
+              repeated media-query scaffolding with a single abstraction.
+            </li>
+          </ol>
+
+          <p class="muted">
+            Files to explore: <code>partials/_bad-extend.scss</code> and
+            <code>partials/_mixins.scss</code>.
+          </p>
+        </section>
+
+
+
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <span>Professor Solo · WebDevTnT</span>
+    <span class="muted">© 2026 Josh Solomon</span>
+  </footer>
+
+  <!-- Chapter entry -->
+  <!-- Shared WebDevTnT scripts are imported in main.js for dev/build parity -->
+  <script type="module" src="./scripts/main.js"></script>
+
+</body>
+
+</html>

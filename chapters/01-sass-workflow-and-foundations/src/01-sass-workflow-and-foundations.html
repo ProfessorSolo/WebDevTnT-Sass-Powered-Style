@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>01 · Modern Sass Workflow</title>
+
+  <!-- Shared WebDevTnT assets (repo root) -->
+  <link rel="stylesheet" href="../../../styles/reset.css" />
+  <link rel="stylesheet" href="../../../styles/brand.css" />
+  <link rel="stylesheet" href="../../../styles/layout.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="brand-bar">
+      <div class="title">Professor Solo · WebDevTnT</div>
+      <nav data-chapter-nav>
+        <a data-ch="01" class="active">Workflow</a>
+        <a data-ch="02">Variables</a>
+        <a data-ch="03">Extend &amp; Mixins</a>
+        <a data-ch="04">Functions</a>
+        <a data-ch="05">Conditionals</a>
+        <a data-ch="06">Loops, Lists, &amp; Maps</a>
+        <a data-ch="07">Sass + Tailwind</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <article class="glass glass--dark demo-card">
+      <header class="demo-header">
+        <p class="demo-kicker">Sass · Foundations</p>
+        <h1>Modern Sass Workflow</h1>
+        <p class="demo-tagline">
+          Vite compiles Sass, and the output lands in <code>dist/</code>. DevTools can still point back to your
+          <code>.scss</code> files via source maps.
+        </p>
+      </header>
+
+      <!-- Tabs (powered by shared scripts/ui.js) -->
+      <nav class="demo-tabs" aria-label="Demo sections">
+        <button class="demo-tab active" type="button" data-panel="panel-overview">
+          What’s happening here
+        </button>
+        <button class="demo-tab" type="button" data-panel="panel-model">Mental model</button>
+        <button class="demo-tab" type="button" data-panel="panel-inspect">What to inspect</button>
+        <button class="demo-tab" type="button" data-panel="panel-verify">
+          Verify the workflow
+        </button>
+      </nav>
+
+      <section class="demo-panels">
+        <section class="demo-panel active" id="panel-overview">
+          <h2>Sass is compiled, not served</h2>
+
+          <p>
+            This page is styled with Sass, but the browser never sees Sass directly.
+            Vite compiles everything to plain CSS before the page loads.
+          </p>
+
+          <ul>
+            <li><strong>One entry file</strong> (<code>main.scss</code>) defines the styling boundary.</li>
+            <li><strong>Partials</strong> are composed with <code>@use</code>, not global imports.</li>
+            <li><strong>The output</strong> is ordinary CSS — that’s what DevTools shows.</li>
+          </ul>
+
+          <div class="demo-code">
+            <h3>Sass entry point</h3>
+            <pre><code>@use "./partials/tokens";
+@use "./partials/base";
+@use "./partials/components";</code></pre>
+
+            <h3>What to inspect in DevTools</h3>
+            <pre><code>.wf-card {
+  /* compiled CSS output */
+}</code></pre>
+          </div>
+
+          <p class="muted">
+            Start in <code>main.scss</code>. Then follow the imports into <code>partials/</code>.
+            When inspecting styles, search for <code>.wf-card</code> and trace it back to Sass.
+          </p>
+        </section>
+
+
+
+        <section class="demo-panel" id="panel-model">
+          <h2>Mental model</h2>
+
+          <p>
+            Sass is a <strong>preprocessor</strong>. It runs before the browser ever sees your styles.
+            Its job is to turn <code>.scss</code> into plain CSS.
+          </p>
+
+          <p>
+            The browser does not understand Sass. It only ever parses the compiled CSS output.
+            By the time the page loads, Sass is already gone.
+          </p>
+
+          <p>
+            During development, Vite may inject compiled CSS into the page using an in-memory
+            <code>&lt;style&gt;</code> tag to support fast hot updates. That is why DevTools can
+            sometimes show <code>&lt;style&gt;</code> as the source.
+          </p>
+
+          <p>
+            <strong>Source maps</strong> bridge that gap. They allow DevTools to map a compiled CSS rule
+            back to the exact Sass file and line that produced it.
+          </p>
+
+          <div class="demo-code">
+            <h3>What this means in practice</h3>
+            <pre><code>• Write Sass for structure, reuse, and safety
+• Inspect CSS in DevTools
+• Jump back to Sass via source maps
+• Fix the problem at the source</code></pre>
+          </div>
+
+          <p class="muted">
+            Sass shapes the CSS you ship, but it is never part of what the browser runs.
+          </p>
+        </section>
+
+
+        <section class="demo-panel" id="panel-inspect">
+          <h2>What to inspect</h2>
+
+          <p>
+            Use this component to trace compiled CSS back to its Sass source.
+          </p>
+
+          <ol>
+            <li>
+              Open DevTools and select the card component below.
+            </li>
+            <li>
+              In the <strong>Styles</strong> pane, find a rule for
+              <code>.wf-card</code> or <code>.wf-card__heading</code>.
+            </li>
+            <li>
+              Click the rule’s source link to jump to the originating
+              <code>.scss</code> partial.
+            </li>
+            <li>
+              Notice that Sass variables (like <code>$space-6</code>) do not appear
+              in the compiled CSS — they are resolved at build time.
+            </li>
+          </ol>
+
+          <div class="demo-code">
+            <h3>Expected outcome</h3>
+            <pre><code>• DevTools shows plain CSS
+• Source links jump to .scss files
+• Variables are resolved, not preserved</code></pre>
+          </div>
+
+          <p class="muted">
+            If DevTools shows <code>&lt;style&gt;</code> in dev, that’s normal with Vite.
+            Clicking the rule should still land on the correct Sass file via source maps.
+          </p>
+        </section>
+
+
+        <section class="demo-panel" id="panel-verify">
+          <h2>Verify the Sass workflow in DevTools</h2>
+
+          <p>
+            This step confirms how Sass fits into a modern development workflow.
+            You’ll verify what the browser receives and how it still points back to the source.
+          </p>
+
+          <ol>
+            <li><strong>The browser receives CSS</strong>, not Sass.</li>
+            <li><strong>Source maps preserve the authoring context</strong>.</li>
+          </ol>
+
+          <div class="demo-code">
+            <h3>What to do</h3>
+            <pre><code>1) Open DevTools → Elements
+2) Select the component card below
+3) In Styles, click a .wf-card rule
+4) Jump to the linked source file</code></pre>
+
+            <h3>What you should observe</h3>
+            <pre><code>• Rules appear as compiled CSS
+• Source links open a .scss file
+• Component rules live in partials/_components.scss
+• Tokens resolve back to partials/_tokens.scss</code></pre>
+          </div>
+
+          <h3>If something looks off</h3>
+          <ul>
+            <li>Make sure you’re running <code>npm run dev</code>.</li>
+            <li>Confirm you’re not using Live Server.</li>
+            <li>Hard refresh after editing Sass files.</li>
+          </ul>
+
+          <p class="muted">
+            This is the daily loop: <strong>inspect output → jump to Sass → change the source</strong>.
+          </p>
+        </section>
+
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <span>Professor Solo · WebDevTnT</span>
+    <span class="muted">© 2026 Josh Solomon</span>
+  </footer>
+
+
+
+  <!-- Chapter entry -->
+  <!-- Shared WebDevTnT scripts are imported in main.js for dev/build parity -->
+  <script type="module" src="./scripts/main.js"></script>
+
+</body>
+
+</html>

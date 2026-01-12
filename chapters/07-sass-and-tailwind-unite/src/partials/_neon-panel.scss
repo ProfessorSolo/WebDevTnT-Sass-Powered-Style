@@ -1,0 +1,58 @@
+@use "./tokens" as *;
+@use "./functions" as fn;
+
+@mixin panel-base($tone-rgb: $cool, $fill: true) {
+  border-radius: $radius-3;
+  border: 1px solid fn.glow($tone-rgb, 0.28);
+  color: $ink;
+
+  @if $fill == true {
+    background: $surface;
+  } @else {
+    background: transparent;
+  }
+
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 0 28px fn.glow($tone-rgb, 0.22),
+    0 18px 46px rgba(0, 0, 0, 0.35);
+}
+
+.neon-panel {
+  @include panel-base($cool, true);
+  padding: $space-6;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-3;
+    margin-bottom: $space-4;
+  }
+
+  &__title {
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+
+  &__text {
+    margin: 0 0 $space-6 0;
+    color: $muted;
+    max-width: 68ch;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $space-2;
+    flex-wrap: wrap;
+  }
+}
+
+.neon-panel--cool { @include panel-base($cool, true); }
+.neon-panel--hot { @include panel-base($hot, true); }
+.neon-panel--ghost { @include panel-base($cool, false); }
+
+.neon-panel--dense {
+  padding: $space-4;
+  .neon-panel__text { margin-bottom: $space-4; }
+}

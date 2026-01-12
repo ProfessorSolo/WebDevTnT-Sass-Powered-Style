@@ -1,0 +1,54 @@
+@use "./tokens" as *;
+
+// A compact variant API using conditionals.
+// tone: cool | hot | ghost
+// size: sm | md | lg
+@mixin badge($tone: cool, $size: md) {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  border-radius: $radius-pill;
+  border: 1px solid $stroke;
+  letter-spacing: 0.02em;
+  color: $ink;
+
+  // size (compile-time)
+  @if $size == sm {
+    padding: 0.25rem $space-3;
+    font-size: 0.85rem;
+  } @else if $size == lg {
+    padding: $space-2 $space-4;
+    font-size: 1.05rem;
+  } @else if $size == md {
+    padding: 0.35rem $space-4;
+    font-size: 0.95rem;
+  } @else {
+    @error "Unknown badge size: #{$size}. Use sm|md|lg.";
+  }
+
+  // tone (compile-time)
+  @if $tone == hot {
+    background: $hot;
+  } @else if $tone == ghost {
+    background: transparent;
+  } @else if $tone == cool {
+    background: $cool;
+  } @else {
+    @error "Unknown badge tone: #{$tone}. Use cool|hot|ghost.";
+  }
+}
+
+// Wrapper classes (readable + greppable)
+.badge { @include badge(); }
+
+.badge--cool-sm   { @include badge(cool, sm); }
+.badge--cool-md   { @include badge(cool, md); }
+.badge--cool-lg   { @include badge(cool, lg); }
+
+.badge--hot-sm    { @include badge(hot, sm); }
+.badge--hot-md    { @include badge(hot, md); }
+.badge--hot-lg    { @include badge(hot, lg); }
+
+.badge--ghost-sm  { @include badge(ghost, sm); }
+.badge--ghost-md  { @include badge(ghost, md); }
+.badge--ghost-lg  { @include badge(ghost, lg); }

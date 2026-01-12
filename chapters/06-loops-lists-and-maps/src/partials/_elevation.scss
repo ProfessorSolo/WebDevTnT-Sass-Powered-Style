@@ -1,0 +1,27 @@
+@use './tokens' as *;
+
+.elev-grid--loud .elev-card {
+  display: grid;
+  place-items: center;
+  min-height: 5.25rem;
+  border-radius: $radius-2;
+  border: 1px solid var(--stroke);
+  background: color-mix(in srgb, var(--surface), transparent 25%);
+  color: var(--ink);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+
+.elev-grid--loud .elev-card span {
+  opacity: 0.95;
+}
+
+/* Generated scale (very visible) */
+@for $i from 1 through 6 {
+  .elev-#{$i} {
+    transform: translateY(-#{$i * 2}px);
+    box-shadow: 0 #{$i * 6}px #{$i * 18}px rgba(0, 0, 0, 0.4),
+      0 0 #{$i * 12}px rgba(120, 160, 255, 0.12);
+  }
+}

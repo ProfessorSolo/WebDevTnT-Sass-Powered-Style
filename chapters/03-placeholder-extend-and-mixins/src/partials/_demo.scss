@@ -1,0 +1,41 @@
+@use "./tokens" as *;
+
+.demo-stage { margin-top: $space-6; }
+
+.extend-grid {
+  display: grid;
+  gap: $space-6;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.extend-zone,
+.mixin-zone {
+  padding: $space-6;
+  border-radius: $radius-2;
+  border: 1px solid $stroke;
+  background: $surface;
+
+  &__kicker {
+    margin: 0 0 $space-4 0;
+    color: $muted;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.85em;
+  }
+}
+
+.btn-row {
+  display: flex;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.mixin-grid {
+  display: grid;
+  gap: $space-6;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+  .mixin-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

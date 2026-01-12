@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>06 · Loops, Lists, and Maps</title>
+
+  <!-- Shared WebDevTnT assets (repo root) -->
+  <link rel="stylesheet" href="../../../styles/reset.css" />
+  <link rel="stylesheet" href="../../../styles/brand.css" />
+  <link rel="stylesheet" href="../../../styles/layout.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="brand-bar">
+      <div class="title">Professor Solo · WebDevTnT</div>
+      <nav data-chapter-nav>
+        <a data-ch="01">Workflow</a>
+        <a data-ch="02">Variables</a>
+        <a data-ch="03">Extend &amp; Mixins</a>
+        <a data-ch="04">Functions</a>
+        <a data-ch="05">Conditionals</a>
+        <a data-ch="06" class="active">Loops, Lists, &amp; Maps</a>
+        <a data-ch="07">Sass + Tailwind</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <article class="glass glass--dark demo-card">
+      <header class="demo-header">
+        <p class="demo-kicker">Sass · Data</p>
+        <h1>Loops, Lists, and Maps</h1>
+        <p class="demo-tagline">
+          Generate families of utilities and variants from data structures. One source of truth, many classes.
+        </p>
+      </header>
+
+      <nav class="demo-tabs" aria-label="Demo sections">
+        <button class="demo-tab active" type="button" data-panel="panel-why">Data Driven CSS</button>
+        <button class="demo-tab" type="button" data-panel="panel-lists">Lists + @each</button>
+        <button class="demo-tab" type="button" data-panel="panel-maps">Maps + @each</button>
+        <button class="demo-tab" type="button" data-panel="panel-for">@for</button>
+        <button class="demo-tab" type="button" data-panel="panel-inspect">What to inspect</button>
+      </nav>
+
+      <section class="demo-panels">
+        <section class="demo-panel active" id="panel-why">
+          <h2>Data-driven CSS generation</h2>
+
+          <p>
+            Sass lets us treat CSS generation as a <strong>data problem</strong>.
+            Instead of hand-authoring dozens of selectors, we iterate over lists and maps
+            to emit predictable class families from a single source of truth.
+          </p>
+
+          <ul>
+            <li><strong>Lists</strong> let us repeat a pattern across a known set of values.</li>
+            <li><strong>Maps</strong> let us generate variants from key/value data.</li>
+            <li><strong>Loops</strong> let us scale a rule family without copy/paste.</li>
+          </ul>
+
+          <p class="muted">
+            The goal is not “more CSS.” The goal is fewer places to maintain the rules.
+          </p>
+
+          <div class="demo-code">
+            <h3>List → utility family</h3>
+            <pre><code>$gaps: 2, 4, 6;
+
+@each $gap in $gaps {
+  .u-gap-#{$gap} {
+    gap: space($gap);
+  }
+}</code></pre>
+
+            <h3>Map → variant family</h3>
+            <pre><code>$tones: (
+  cool: var(--cool),
+  hot: var(--hot),
+  ghost: transparent
+);
+
+@each $name, $color in $tones {
+  .pill--#{$name} {
+    background: $color;
+  }
+}</code></pre>
+          </div>
+
+        </section>
+
+        <section class="demo-panel" id="panel-lists">
+          <h2>Lists + @each</h2>
+
+          <p>
+            We generate a <strong>family</strong> of spacing utilities from a single list.
+            Each value becomes a class like <code>.u-gap-2</code>, <code>.u-gap-4</code>, <code>.u-gap-6</code>.
+          </p>
+
+          <section class="demo-stage demo-compare">
+            <h3>Generated class: <code>.u-gap-2</code></h3>
+            <div class="demo-compare__col">
+
+              <div class="u-stack u-gap-2" aria-label="Stack using u-gap-2">
+                <div class="u-box">gap is coming from <code>.u-gap-2</code></div>
+                <div class="u-box">tighter spacing</div>
+                <div class="u-box">same markup, different class</div>
+              </div>
+            </div>
+            <h3>Generated class: <code>.u-gap-6</code></h3>
+            <div class="demo-compare__col">
+
+              <div class="u-stack u-gap-6" aria-label="Stack using u-gap-6">
+                <div class="u-box">gap is coming from <code>.u-gap-6</code></div>
+                <div class="u-box">roomier spacing</div>
+                <div class="u-box">still zero copy/paste CSS</div>
+              </div>
+            </div>
+          </section>
+
+          <div class="demo-code">
+            <h3>Sass (list loop)</h3>
+            <pre><code>$gaps: 2, 4, 6;
+
+@each $g in $gaps {
+  .u-gap-#{$g} {
+    gap: $g * 0.25rem;
+  }
+}</code></pre>
+
+            <h3>What gets emitted</h3>
+            <pre><code>.u-gap-2 { gap: 0.5rem; }
+.u-gap-4 { gap: 1rem; }
+.u-gap-6 { gap: 1.5rem; }</code></pre>
+          </div>
+
+          <p class="muted">
+            See <code>partials/_utilities.scss</code> (list loop). The markup stays the same; the class picks the spacing.
+          </p>
+        </section>
+
+
+        <section class="demo-panel" id="panel-maps">
+          <h2>Maps + @each</h2>
+
+          <p>
+            Maps are key/value data. Each key becomes a predictable class name, and each value becomes the styling payload.
+            Perfect for variants like tones, intents, and themes.
+          </p>
+
+          <section class="demo-stage demo-compare">
+            <div class="demo-compare__col">
+              <h3>Same component, different map keys</h3>
+              <div class="pill-row" aria-label="Tone pills generated from a map">
+                <span class="pill pill--cool">pill--cool</span>
+                <span class="pill pill--hot">pill--hot</span>
+                <span class="pill pill--ghost">pill--ghost</span>
+              </div>
+              <p class="muted">
+                These classes are emitted by iterating the map: <code>cool</code>, <code>hot</code>, <code>ghost</code>.
+              </p>
+            </div>
+
+            <div class="demo-compare__col">
+              <h3>What changes vs what stays</h3>
+              <ul>
+                <li><strong>Stays:</strong> shared pill base styles (<code>.pill</code>).</li>
+                <li><strong>Changes:</strong> tone-specific values from the map (<code>.pill--*</code>).</li>
+                <li><strong>Result:</strong> one source of truth, many variants.</li>
+              </ul>
+            </div>
+          </section>
+
+          <div class="demo-code">
+            <h3>Sass (map loop)</h3>
+            <pre><code>$tones: (
+  cool: (bg: rgba(120, 160, 255, 0.18), stroke: rgba(120, 160, 255, 0.45)),
+  hot: (bg: rgba(255, 140, 0, 0.18), stroke: rgba(255, 140, 0, 0.45)),
+  ghost: (bg: transparent, stroke: rgba(233, 238, 252, 0.35))
+);
+
+@each $name, $vals in $tones {
+  .pill--#{$name} {
+    background: map-get($vals, bg);
+    border-color: map-get($vals, stroke);
+  }
+}</code></pre>
+
+            <h3>Output shape</h3>
+            <pre><code>.pill--cool { ... }
+.pill--hot  { ... }
+.pill--ghost{ ... }</code></pre>
+          </div>
+
+          <p class="muted">
+            See <code>partials/_pills.scss</code> (map loop). Inspect a pill and trace its rules back to the map entry.
+          </p>
+        </section>
+
+        <section class="demo-panel" id="panel-for">
+          <h2>@for</h2>
+
+          <p>
+            <code>@for</code> is ideal for generating <strong>numbered scales</strong>.
+            Here we generate a type scale: <code>.scale-1</code> through <code>.scale-6</code>.
+            Higher numbers produce larger text.
+          </p>
+
+          <section class="demo-stage">
+            <div class="scale-stack" aria-label="Type scale generated with @for">
+              <div class="scale-item scale-1">scale-1</div>
+              <div class="scale-item scale-2">scale-2</div>
+              <div class="scale-item scale-3">scale-3</div>
+              <div class="scale-item scale-4">scale-4</div>
+              <div class="scale-item scale-5">scale-5</div>
+              <div class="scale-item scale-6">scale-6</div>
+            </div>
+          </section>
+
+          <div class="demo-code">
+            <h3>Sass (@for loop)</h3>
+            <pre><code>@for $i from 1 through 6 {
+  .scale-#{$i} {
+    font-size: 0.75rem + ($i * 0.35rem);
+  }
+}</code></pre>
+
+            <h3>What to notice</h3>
+            <pre><code>scale-1 → smallest
+scale-6 → largest
+One loop → six classes</code></pre>
+          </div>
+
+          <p class="muted">
+            See <code>partials/_scale.scss</code> (<code>@for</code> loop). Inspect any <code>.scale-*</code> class and
+            trace it back to the loop that generated it.
+          </p>
+        </section>
+
+        <section class="demo-panel" id="panel-inspect">
+          <h2>What to inspect</h2>
+
+          <ol>
+            <li>
+              In DevTools, search the compiled CSS for
+              <code>.u-gap-</code>, <code>.pill--</code>, and <code>.scale-</code>.
+            </li>
+            <li>
+              Jump back to Sass and locate the <strong>loop</strong> that generated each family.
+            </li>
+            <li>
+              Change <em>one</em> list or map value and watch the entire class family update.
+            </li>
+            <li>
+              Notice: the loop itself never appears in the output — only the generated selectors do.
+            </li>
+          </ol>
+
+          <p class="muted">
+            Files: <code>partials/_utilities.scss</code>, <code>partials/_pills.scss</code>, <code>partials/_scale.scss</code>.
+          </p>
+        </section>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <span>Professor Solo · WebDevTnT</span>
+    <span class="muted">© 2026 Josh Solomon</span>
+  </footer>
+
+  <!-- Chapter entry -->
+  <!-- Shared WebDevTnT scripts are imported in main.js for dev/build parity -->
+  <script type="module" src="./scripts/main.js"></script>
+
+</body>
+
+</html>
