@@ -1,27 +1,30 @@
-@use './tokens' as *;
+@use "./tokens" as *;
 
-.elev-grid--loud .elev-card {
+// FOR loop: generate stepped elevation classes
+$max: 6;
+
+.elev-grid {
   display: grid;
-  place-items: center;
-  min-height: 5.25rem;
+  gap: $space-4;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.elev-card {
+  padding: $space-6;
   border-radius: $radius-2;
-  border: 1px solid var(--stroke);
-  background: color-mix(in srgb, var(--surface), transparent 25%);
-  color: var(--ink);
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  transition: transform 140ms ease, box-shadow 140ms ease;
+  border: 1px solid $stroke;
+  background: $surface;
+  color: $ink;
 }
 
-.elev-grid--loud .elev-card span {
-  opacity: 0.95;
-}
-
-/* Generated scale (very visible) */
-@for $i from 1 through 6 {
+@for $i from 1 through $max {
   .elev-#{$i} {
-    transform: translateY(-#{$i * 2}px);
-    box-shadow: 0 #{$i * 6}px #{$i * 18}px rgba(0, 0, 0, 0.4),
-      0 0 #{$i * 12}px rgba(120, 160, 255, 0.12);
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+      0 (6px * $i) (16px * $i) rgba(0, 0, 0, (0.08 + ($i * 0.02)));
   }
 }
